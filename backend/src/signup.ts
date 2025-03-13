@@ -1,3 +1,4 @@
+import cors from "cors";
 import crypto from "crypto";
 import express from "express";
 import pgp from "pg-promise";
@@ -5,9 +6,11 @@ import { validateCpf } from "./validateCpf";
 
 const app = express();
 app.use(express.json());
+app.use(cors())
 
 app.post("/signup", async (request, response) => {
   const input = request.body;
+  console.log('Signup', input)
   const connection = pgp()("postgres://postgres:123456@localhost:5432/app");
   try {
     const id = crypto.randomUUID();
