@@ -7,7 +7,9 @@
     password: '',
     isPassenger: false,
   });
-  const accountId = ref()
+  const accountId = ref("")
+  const status = ref("")
+  const message = ref("")
 
   function fill() {
     form.value.name='John Doe';
@@ -26,33 +28,44 @@
       body: JSON.stringify(form.value)
     });
     const output = await response.json();
-    accountId.value = output.accountId;
+    if(output.accountId) {
+      accountId.value = output.accountId;
+      status.value = "success"
+    } else {
+      message.value = output.message
+      status.value = "error"
+    }
+    
   }
 </script>
 
 <template>
   <div>
-    <input type="text" placeholder="Name" v-model="form.name">
+    <input class="input-name" type="text" placeholder="Name" v-model="form.name">
   </div>
   <div>
-    <input type="text" placeholder="Email" v-model="form.email">
+    <input class="input-email" type="text" placeholder="Email" v-model="form.email">
   </div>
   <div>
-    <input type="text" placeholder="Cpf" v-model="form.cpf">
+    <input class="input-cpf" type="text" placeholder="Cpf" v-model="form.cpf">
   </div>
   <div>
-    <input type="text" placeholder="Password" v-model="form.password">
+    <input class="input-password" type="text" placeholder="Password" v-model="form.password">
   </div>
   <div>
-    <input type="checkbox" v-model="form.isPassenger"> Passenger
+    <input class="input-is-passenger" type="checkbox" v-model="form.isPassenger"> Passenger
   </div>
   <br>
   {{ form }}
   <br>
   {{ accountId }}
   <br>
+  <span class="span-status">{{ status }}</span>
+  <br>
+  <span class="span-message">{{ message }}</span>
+  <br>
   <div>
-    <button @click="signup()">Signup</button>
+    <button class="btn-signup" @click="signup()">Signup</button>
     <button @click="fill()">Fill</button>
   </div>
 </template>
